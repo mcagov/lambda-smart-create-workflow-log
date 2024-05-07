@@ -1,0 +1,21 @@
+spring:
+  config:
+    import: optional:file:.env[.properties]
+  main:
+    allow-bean-definition-overriding: true
+  cloud:
+    aws:
+      endpoint: localhost:4566
+
+aws:
+  endpoint: http://172.17.0.1:4566
+  access-key-id: dummy
+  secret-access-key: dummy
+
+logging:
+  level:
+    root: INFO
+    org.springframework: INFO
+    uk.mcga.smart: DEBUG
+    org.springframework.cloud: DEBUG
+    org.springframework.web.client.RestTemplate: TRACE

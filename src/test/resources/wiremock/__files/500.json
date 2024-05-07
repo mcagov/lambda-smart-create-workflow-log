@@ -1,0 +1,6 @@
+{
+  "code": 500,
+  "status": "UnknownError",
+  "message": "UnknownError",
+  "timestamp": "{{now}}"
+}

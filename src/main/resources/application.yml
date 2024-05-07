@@ -1,0 +1,36 @@
+spring:
+  cloud:
+    function:
+      definition: Forecast
+      preferred-json-mapper: jackson
+  jackson:
+    default-property-inclusion: non-null
+    mapper:
+      accept-case-insensitive-properties: true
+    deserialization:
+      fail-on-unknown-properties: false
+    date-format: yyyy-MM-dd'T'HH:mm:ss
+  data:
+    redis:
+      ssl:
+        enabled: true
+okta:
+  redis-host: ${REDIS_HOST:service.local.smart.mcga.uk}
+  redis-port: ${REDIS_PORT:6379}
+  redis-database: 2
+  redis-password-key: ${REDIS_PASSWORD_KEY}
+  client-id-key: ${OKTA_CLIENT_ID_KEY}
+  client-secret-Key: ${OKTA_CLIENT_SECRET_KEY}
+  token-uri: ${OKTA_TOKEN_URL}
+  expiration: ${OKTA_EXPIRATION:3600}
+
+smart:
+  forecast:
+    smart-api-uri: ${SMART_API_URI}
+
+logging:
+  format: ${LOGGING_FORMAT:json}
+  level:
+    root: INFO
+    uk.mcga.smart: DEBUG
+    org.springframework: INFO

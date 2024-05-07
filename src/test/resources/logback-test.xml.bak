@@ -1,0 +1,28 @@
+<configuration>
+    <serializeModel file="src/main/resources/logback.scmo"/>
+    <springProperty scope="context" name="logging_format" source="logging.format"
+        defaultValue="json" />
+    <appender name="jsonConsoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder" />
+    </appender>
+    <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%black(%d{ISO8601}) %highlight(%-5level) %yellow(%logger{20}):               %msg%n%throwable</Pattern>
+        </layout>
+    </appender>
+
+
+    <if condition='property("logging_format").contains("flat")'>
+        <then>
+            <root level="WARN">
+                <appender-ref ref="consoleAppender" />
+            </root>
+        </then>
+        <else>
+            <root level="WARN">
+                <appender-ref ref="jsonConsoleAppender" />
+            </root>
+        </else>
+    </if>
+
+</configuration>

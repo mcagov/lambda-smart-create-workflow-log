@@ -1,0 +1,6 @@
+{
+  "code": 401,
+  "status": "Unauthorized",
+  "message": "Unauthorized",
+  "timestamp": "{{now}}"
+}

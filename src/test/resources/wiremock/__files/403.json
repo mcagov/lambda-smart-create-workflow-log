@@ -1,0 +1,6 @@
+{
+  "code": 403,
+  "status": "Forbidden",
+  "message": "Forbidden",
+  "timestamp": "{{now}}"
+}

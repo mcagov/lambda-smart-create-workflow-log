@@ -1,0 +1,132 @@
+plugins {
+    id 'java'
+    id 'jacoco'
+    // id 'org.graalvm.buildtools.native' version '0.9.28'
+    id 'org.springframework.boot' version '3.2.3'
+    id 'io.spring.dependency-management' version '1.1.4'
+    id 'maven-publish'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'org.springframework.boot.experimental.thin-launcher' version '1.0.31.RELEASE'
+}
+
+if (project.hasProperty('projVersion')) {
+    project.version = project.projVersion
+} else {
+    project.version = '1.0.1'
+}
+
+group = 'uk.mcga.smart'
+
+repositories {
+    maven {
+        url 'https://mcga-676563297163.d.codeartifact.eu-west-2.amazonaws.com/maven/mcga-maven/'
+        credentials {
+                username 'aws'
+                password System.env.CODEARTIFACT_AUTH_TOKEN
+        }
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+            url = 'https://mcga-676563297163.d.codeartifact.eu-west-2.amazonaws.com/maven/mcga-maven/'
+            credentials {
+                username 'aws'
+                password System.env.CODEARTIFACT_AUTH_TOKEN
+            }
+        }
+    }
+    publications {
+        bootJava(MavenPublication) {
+            artifact bootJar
+        }
+    }
+}
+
+dependencyManagement {
+    imports {
+        mavenBom 'org.springframework.cloud:spring-cloud-dependencies:2023.0.0'
+    }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+
+    implementation 'org.springframework.cloud:spring-cloud-function-adapter-aws'
+    implementation 'org.springframework.cloud:spring-cloud-function-context'
+    implementation 'org.springframework.cloud:spring-cloud-starter-function-web'
+    implementation 'org.springframework.cloud:spring-cloud-function-web'
+
+    implementation 'org.springframework.retry:spring-retry:2.0.5'
+
+    implementation 'org.apache.commons:commons-lang3'
+
+    implementation 'uk.mcga.smart.lambda:lambda-okta-base:1.0.8'
+
+    implementation 'com.amazonaws.secretsmanager:aws-secretsmanager-caching-java:2.0.0'
+
+    // Libraries for json logging
+    implementation 'net.logstash.logback:logstash-logback-encoder:7.4'
+    implementation 'ch.qos.logback:logback-classic'
+    implementation 'org.codehaus.janino:janino:3.1.10'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+}
+
+assemble.dependsOn = [thinJar, shadowJar]
+
+shadowJar.mustRunAfter thinJar
+import com.github.jengelman.gradle.plugins.shadow.transformers.*
+
+shadowJar {
+    archiveClassifier = 'aws'
+    manifest {
+        inheritFrom(project.tasks.thinJar.manifest)
+    }
+    // Required for Spring
+    mergeServiceFiles()
+    append 'META-INF/spring.handlers'
+    append 'META-INF/spring.schemas'
+    append 'META-INF/spring.tooling'
+    append 'META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports'
+    append 'META-INF/spring/org.springframework.boot.actuate.autoconfigure.web.ManagementContextConfiguration.imports'
+    transform(PropertiesFileTransformer) {
+        paths = ['META-INF/spring.factories']
+        mergeStrategy = 'append'
+    }
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+    finalizedBy jacocoTestReport // report is always generated after tests run
+
+    testLogging {
+        events('PASSED', 'SKIPPED', 'FAILED')
+    }
+}
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.required = true
+        csv.required = false
+        html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
+    }
+}
+
+// tasks.named('bootBuildImage') {
+//     builder = 'paketobuildpacks/builder-jammy-tiny:latest'
+//     imageName = "676563297163.dkr.ecr.eu-west-2.amazonaws.com/${rootProject.name}:${version}"
+// }

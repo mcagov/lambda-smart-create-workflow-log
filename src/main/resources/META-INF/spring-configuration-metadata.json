@@ -1,0 +1,20 @@
+{
+  "properties": [
+    {
+      "name": "smart.forecast.smart-api-uri",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "logging.format",
+      "type": "java.lang.String",
+      "values": [
+        {
+            "value": "flat"
+        },
+        {
+            "value": "json"
+        }
+    ]
+    }
+  ]
+}

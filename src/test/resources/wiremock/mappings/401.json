@@ -1,0 +1,23 @@
+{
+  "priority": 3,
+  "request": {
+    "method": "POST",
+    "urlPath": "/v1/workflow_log",
+    "bodyPatterns": [
+      {
+        "matchesJsonPath" : {
+          "expression": "$.message",
+          "contains": "HTTP 401"
+        }
+      }
+    ]
+  },
+  "response": {
+    "status": 401,
+    "headers": {
+        "Content-Type": "application/json"
+    },
+    "bodyFileName": "401.json",
+    "transformers": ["response-template"]
+  }
+}

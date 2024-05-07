@@ -1,0 +1,58 @@
+services:
+
+  wiremock-smart-api:
+    image: wiremock/wiremock
+    entrypoint: ["/docker-entrypoint.sh", "--global-response-templating", "--disable-gzip", "--verbose"]
+    ports:
+      - 8080:8080
+    volumes:
+      - ${PWD}/src/test/resources/wiremock:/home/wiremock
+
+  localstack:
+    image: localstack/localstack:3.0
+    ports:
+      - "4566:4566"
+    environment:
+      - AWS_DEFAULT_REGION=eu-west-2
+      - AWS_REGION=eu-west-2
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID-123}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY-DUMMYKEY}
+      - AWS_SESSION_TOKEN=${AWS_SESSION_TOKEN-DUMMYTOKEN}
+      - SERVICES=secretsmanager
+      - DEBUG=${DEBUG-0}
+      - DATA_DIR=${DATA_DIR- }
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - OKTA_CLIENT_ID=${OKTA_CLIENT_ID}
+      - OKTA_CLIENT_SECRET=${OKTA_CLIENT_SECRET}
+      - OKTA_CLIENT_ID_KEY=${OKTA_CLIENT_ID_KEY}
+      - OKTA_CLIENT_SECRET_KEY=${OKTA_CLIENT_SECRET_KEY}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_PASSWORD_KEY=${REDIS_PASSWORD_KEY}
+
+    volumes:
+      - "${TMPDIR:-/tmp/localstack}:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - ${PWD}/src/test/resources/localstack/bootstrap/:/etc/localstack/init/ready.d/
+    deploy:
+      resources:
+        limits:
+          memory: 1g
+          cpus: "0.5"
+    memswap_limit: 1g
+
+  redis:
+    image: 676563297163.dkr.ecr.eu-west-2.amazonaws.com/redis:6.2
+    ports:
+      - '6379:6379'
+    environment:
+      - REDIS_PASSWORD=$REDIS_PASSWORD
+    volumes:
+      - ${PWD}/src/test/resources/redis/ssl/service.local.smart.mcga.uk-fullchain.pem:/usr/local/etc/redis/redis.crt
+      - ${PWD}/src/test/resources/redis/ssl/service.local.smart.mcga.uk-key.pem:/usr/local/etc/redis/redis.key
+      - ${PWD}/src/test/resources/redis/ssl/service.local.smart.mcga.uk-root-ca.pem:/usr/local/etc/redis/ca.crt
+    deploy:
+      resources:
+        limits:
+          memory: 1g
+          cpus: "0.5"
+    memswap_limit: 1g

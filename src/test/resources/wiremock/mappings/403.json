@@ -1,0 +1,23 @@
+{
+  "priority": 2,
+  "request": {
+    "method": "POST",
+    "urlPath": "/v1/workflow_log",
+    "bodyPatterns": [
+      {
+        "matchesJsonPath" : {
+          "expression": "$.message",
+          "contains": "HTTP 403"
+        }
+      }
+    ]
+  },
+  "response": {
+    "status": 403,
+    "headers": {
+        "Content-Type": "application/json"
+    },
+    "bodyFileName": "403.json",
+    "transformers": ["response-template"]
+  }
+}

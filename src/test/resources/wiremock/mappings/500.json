@@ -1,0 +1,23 @@
+{
+  "priority": 1,
+  "request": {
+    "method": "POST",
+    "urlPath": "/v1/workflow_log",
+    "bodyPatterns": [
+      {
+        "matchesJsonPath" : {
+          "expression": "$.message",
+          "contains": "HTTP 500"
+        }
+      }
+    ]
+  },
+  "response": {
+    "status": 500,
+    "headers": {
+        "Content-Type": "application/json"
+    },
+    "bodyFileName": "500.json",
+    "transformers": ["response-template"]
+  }
+}

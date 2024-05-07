@@ -1,0 +1,7 @@
+{
+  "id": "{{randomValue type='UUID'}}",
+  "workflow": "{{jsonPath request.body '$.workflow'}}",
+  "trainingProviderId": "{{jsonPath request.body '$.trainingProviderId'}}",
+  "created": "{{now}}",
+  "message": "{{jsonPath request.body '$.message'}}"
+}

@@ -1,0 +1,21 @@
+<configuration debug="false">
+
+    <springProperty scope="context" name="logging_format" source="logging.format"
+        defaultValue="json" />
+
+    <appender name="jsonConsoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder" />
+    </appender>
+
+    <appender name="flatConsoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%green(%d{ISO8601}) %highlight(%-5level) %yellow(%logger{20}): %msg%n%throwable</Pattern>
+        </layout>
+    </appender>
+
+
+    <root level="WARN">
+        <appender-ref ref="${logging_format}ConsoleAppender" />
+    </root>
+
+</configuration>
