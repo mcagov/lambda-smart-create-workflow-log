@@ -130,7 +130,7 @@ pipeline {
 
                     sh "./gradlew -x test -PprojVersion=${BUILD_VERSION} clean build"
 
-                    sh 'aws s3 cp build/libs/${LAMBDA_PACKAGE} s3://mca-devtools/artifacts/lambdas/${LAMBDA_FOLDER}/${LAMBDA_PACKAGE}'
+                    sh 'aws s3 cp build/libs/${LAMBDA_PACKAGE} s3://mcauk-smart-live-terraform-tfstate/artifacts/lambdas/${LAMBDA_FOLDER}/${LAMBDA_PACKAGE}'
                 }
             }
         }
