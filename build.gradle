@@ -19,7 +19,7 @@ group = 'uk.mcga.smart'
 
 repositories {
     maven {
-        url 'https://mcga-676563297163.d.codeartifact.eu-west-2.amazonaws.com/maven/mcga-maven/'
+        url 'https://mcga-009543623063.d.codeartifact.eu-west-2.amazonaws.com/maven/mcga-maven/'
         credentials {
                 username 'aws'
                 password System.env.CODEARTIFACT_AUTH_TOKEN
@@ -30,7 +30,7 @@ repositories {
 publishing {
     repositories {
         maven {
-            url = 'https://mcga-676563297163.d.codeartifact.eu-west-2.amazonaws.com/maven/mcga-maven/'
+            url = 'https://mcga-009543623063.d.codeartifact.eu-west-2.amazonaws.com/maven/mcga-maven/'
             credentials {
                 username 'aws'
                 password System.env.CODEARTIFACT_AUTH_TOKEN
@@ -130,5 +130,5 @@ jacocoTestReport {
 
 // tasks.named('bootBuildImage') {
 //     builder = 'paketobuildpacks/builder-jammy-tiny:latest'
-//     imageName = "676563297163.dkr.ecr.eu-west-2.amazonaws.com/${rootProject.name}:${version}"
+//     imageName = "009543623063.dkr.ecr.eu-west-2.amazonaws.com/${rootProject.name}:${version}"
 // }

@@ -41,7 +41,7 @@ services:
     memswap_limit: 1g
 
   redis:
-    image: 676563297163.dkr.ecr.eu-west-2.amazonaws.com/redis:6.2
+    image: 009543623063.dkr.ecr.eu-west-2.amazonaws.com/redis:6.2
     ports:
       - '6379:6379'
     environment:
