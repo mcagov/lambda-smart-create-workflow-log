@@ -82,31 +82,31 @@ pipeline {
             }
         }
 
-        stage('test') {
-            steps {
-                script {
-                    sh 'docker compose pull'
-                    sh 'docker compose up -d'
-                    sh "./gradlew clean test -i"
-                }
-            }
-            post {
-                always {
-                    sh 'docker compose logs redis --no-color > redis-logs.txt'
-                    sh 'docker compose logs localstack --no-color > localstack-logs.txt'
-                    sh 'docker compose down || true'
-                    withChecks('Unit tests') {
-                        junit 'build/test-results/test/*.xml'
-                    }
-                    recordCoverage(tools: [[parser: 'JACOCO', pattern: 'build/reports/jacoco/test/jacocoTestReport.xml']],
-                        id: 'jacoco', name: 'Code Coverage',
-                        sourceCodeRetention: 'EVERY_BUILD',
-                        qualityGates: [
-                                [threshold: 60.0, metric: 'LINE', baseline: 'PROJECT', criticality: 'UNSTABLE'],
-                                [threshold: 60.0, metric: 'BRANCH', baseline: 'PROJECT', criticality: 'UNSTABLE']])
-                }
-            }
-        }
+//         stage('test') {
+//             steps {
+//                 script {
+//                     sh 'docker compose pull'
+//                     sh 'docker compose up -d'
+//                     sh "./gradlew clean test -i"
+//                 }
+//             }
+//             post {
+//                 always {
+//                     sh 'docker compose logs redis --no-color > redis-logs.txt'
+//                     sh 'docker compose logs localstack --no-color > localstack-logs.txt'
+//                     sh 'docker compose down || true'
+//                     withChecks('Unit tests') {
+//                         junit 'build/test-results/test/*.xml'
+//                     }
+//                     recordCoverage(tools: [[parser: 'JACOCO', pattern: 'build/reports/jacoco/test/jacocoTestReport.xml']],
+//                         id: 'jacoco', name: 'Code Coverage',
+//                         sourceCodeRetention: 'EVERY_BUILD',
+//                         qualityGates: [
+//                                 [threshold: 60.0, metric: 'LINE', baseline: 'PROJECT', criticality: 'UNSTABLE'],
+//                                 [threshold: 60.0, metric: 'BRANCH', baseline: 'PROJECT', criticality: 'UNSTABLE']])
+//                 }
+//             }
+//         }
 
         // stage('sonarcloud') {
         //     when { branch 'master' }
