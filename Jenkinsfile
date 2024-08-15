@@ -45,7 +45,6 @@ pipeline {
                 docker {
                     image '009543623063.dkr.ecr.eu-west-2.amazonaws.com/jenkins-gradle-ci:corretto-17'
                     alwaysPull true
-                    label 'smart-large-agent'
                     args '-v /var/run/docker.sock:/var/run/docker.sock -v /tmp:/tmp'
                 }
             }
