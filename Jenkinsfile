@@ -72,7 +72,7 @@ pipeline {
                     }
 
                     sh 'echo "Setting BUILD_VERSION to ${BUILD_VERSION}"'
-                    //buildName "${BUILD_VERSION}"
+                    buildName "${BUILD_VERSION}"
 
                     withAWS(roleAccount:'009543623063', role:'CrossAccount-Deployer', region: "${AWS_REGION}") {
                         sh "./update-local-certs.sh"
