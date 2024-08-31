@@ -35,7 +35,7 @@ pipeline {
 //         SONAR_PROJECT = "${env.JOB_NAME.toLowerCase().split('/')[1]}"
 //         SONAR_TOKEN = credentials('devtools/sonar-token')
         AWS_REGION = 'eu-west-2'
-        BRANCH_NAME = 'develop'
+
         AWS_CREDENTIALS_ID = 'aws-jenkins-service-account-credentials' // ID for AWS credentials in Jenkins
     }
 
