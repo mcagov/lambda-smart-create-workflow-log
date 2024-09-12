@@ -137,21 +137,21 @@ pipeline {
                 }
             }
         }
-        stage('Tag Release') {
-            when {
-                branch 'master'
-            }
-            steps {
-                script {
-                    withCredentials([usernamePassword(credentialsId: 'mca-bot-gh', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
-                        sh '''
-                            git tag -a v${BUILD_VERSION} -m "release ${BUILD_VERSION} || true"
-                            git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/mcga-gov-uk/${GIT_REPO_NAME}.git v${BUILD_VERSION}
-                        '''
-                    }
-                }
-            }
-        }
+//         stage('Tag Release') {
+//             when {
+//                 branch 'master'
+//             }
+//             steps {
+//                 script {
+//                     withCredentials([usernamePassword(credentialsId: 'mca-bot-gh', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+//                         sh '''
+//                             git tag -a v${BUILD_VERSION} -m "release ${BUILD_VERSION} || true"
+//                             git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/mcga-gov-uk/${GIT_REPO_NAME}.git v${BUILD_VERSION}
+//                         '''
+//                     }
+//                 }
+//             }
+//         }
 
     }
 
