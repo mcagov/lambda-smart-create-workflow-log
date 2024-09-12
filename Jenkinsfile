@@ -10,8 +10,8 @@ pipeline {
 
     environment{
         GITHUB = credentials('mca-bot-gh')
-	    //GIT_REPO_NAME = "${env.JOB_NAME.split('/')[-2]}"
-	    GIT_REPO_NAME = "lambda-smart-create-workflow"
+	    GIT_REPO_NAME = "${env.JOB_NAME.split('/')[-2]}"
+	    //GIT_REPO_NAME = "lambda-smart-create-workflow"
 	    LOGGING_FORMAT = 'flat'
 
         REDIS_PASSWORD = 'easypassword'
