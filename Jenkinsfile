@@ -129,7 +129,7 @@ pipeline {
             steps {
                 script {
                     env.LAMBDA_FOLDER  = env.GIT_REPO_NAME
-                    env.LAMBDA_PACKAGE = sh (script:'echo -n "${LAMBDA_FOLDER}-${BUILD_VERSION}.jar"',returnStdout: true).trim()
+                    env.LAMBDA_PACKAGE = sh (script:'echo -n "${LAMBDA_FOLDER}-${BUILD_VERSION}-aws.jar"',returnStdout: true).trim()
 
                     sh "./gradlew -x test -PprojVersion=${BUILD_VERSION} clean build"
 
